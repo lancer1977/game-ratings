@@ -1,0 +1,93 @@
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #FFFFFF;
+  font-family: sans-serif;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+img {
+  display: block;
+}
+
+.rating-container {
+  position: relative;
+  width: 600px;
+  height: auto;
+  margin: 0 auto;
+}
+
+.rating-layer {
+  position: absolute;
+  width: 83px;
+  height: 75px;
+  display: none;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.click-area {
+  position: absolute;
+  width: 83px;
+  height: 75px;
+  z-index: 9;
+  cursor: pointer;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.click-area:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+}
+
+.rating-labels {
+  width: 600px;
+  margin: 10px auto;
+  font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 20px;
+  gap: 10px;
+}
+
+.rating-labels div {
+  background: #f0f0f0;
+  border-radius: 8px;
+  padding: 6px 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  min-width: 120px;
+  text-align: center;
+}
+
+.form-section {
+  width: 600px;
+  margin: 20px auto;
+  text-align: center;
+}
+
+.form-section input[type="text"] {
+  padding: 8px;
+  font-size: 14px;
+  width: 60%;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+}
+
+.form-section button {
+  padding: 8px 16px;
+  font-size: 14px;
+  border: none;
+  border-radius: 6px;
+  background-color: #007BFF;
+  color: white;
+  cursor: pointer;
+}
+
+.form-section button:hover {
+  background-color: #0056b3;
+}

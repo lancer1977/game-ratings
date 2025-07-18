@@ -1,0 +1,204 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>GameRatingSystem</title>
+<meta charset="UTF-8" />
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: #FFFFFF;
+    font-family: sans-serif;
+  }
+
+  table {
+    border-collapse: collapse;
+  }
+
+  img {
+    display: block;
+  }
+
+  .rating-container {
+    position: relative;
+    width: 600px;
+    height: auto;
+    margin: 0 auto;
+  }
+
+  .rating-layer {
+    position: absolute;
+    width: 83px;
+    height: 75px;
+    display: none;
+    z-index: 10;
+    pointer-events: none;
+  }
+
+  .click-area {
+    position: absolute;
+    width: 83px;
+    height: 75px;
+    z-index: 9;
+    cursor: pointer;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .click-area:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+  }
+
+  .rating-labels {
+    width: 600px;
+    margin: 10px auto;
+    font-size: 14px;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+    gap: 10px;
+  }
+
+  .rating-labels div {
+    background: #f0f0f0;
+    border-radius: 8px;
+    padding: 6px 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    min-width: 120px;
+    text-align: center;
+  }
+
+  .form-section {
+    width: 600px;
+    margin: 20px auto;
+    text-align: center;
+  }
+
+  .form-section input[type="text"] {
+    padding: 8px;
+    font-size: 14px;
+    width: 60%;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+  }
+
+  .form-section button {
+    padding: 8px 16px;
+    font-size: 14px;
+    border: none;
+    border-radius: 6px;
+    background-color: #007BFF;
+    color: white;
+    cursor: pointer;
+  }
+
+  .form-section button:hover {
+    background-color: #0056b3;
+  }
+</style>
+</head>
+<body>
+<div class="rating-container" id="rating-container">
+  <table width="600" border="0" cellpadding="0" cellspacing="0">
+    <tr>
+      <td colspan="3">
+        <img src="images/GameRatingSystem_01.png" width="600" height="281" alt="" />
+      </td>
+    </tr>
+    <tr>
+      <td rowspan="5">
+        <img src="images/GameRatingSystem_02.png" width="160" height="319" alt="" />
+      </td>
+      <td>
+        <img src="images/Gameplay_Rate.png" width="415" height="75" alt="Gameplay" />
+      </td>
+      <td rowspan="5">
+        <img src="images/GameRatingSystem_04.png" width="25" height="319" alt="" />
+      </td>
+    </tr>
+    <tr><td><img src="images/Challenge_Rate.png" width="415" height="75" alt="Challenge" /></td></tr>
+    <tr><td><img src="images/Graphics_Rate.png" width="415" height="75" alt="Graphics" /></td></tr>
+    <tr><td><img src="images/Sound_Rate.png" width="415" height="75" alt="Sound" /></td></tr>
+    <tr><td><img src="images/GameRatingSystem_08.png" width="415" height="19" alt="" /></td></tr>
+  </table>
+
+  <img src="images/CircleSelect.png" class="rating-layer" id="selector_Gameplay" />
+  <img src="images/CircleSelect.png" class="rating-layer" id="selector_Challenge" />
+  <img src="images/CircleSelect.png" class="rating-layer" id="selector_Graphics" />
+  <img src="images/CircleSelect.png" class="rating-layer" id="selector_Sound" />
+</div>
+
+<div class="rating-labels">
+  <div>Gameplay: <span id="val_Gameplay">-</span></div>
+  <div>Challenge: <span id="val_Challenge">-</span></div>
+  <div>Graphics: <span id="val_Graphics">-</span></div>
+  <div>Sound: <span id="val_Sound">-</span></div>
+</div>
+
+<div class="form-section">
+  <input type="text" id="gameTitle" placeholder="Enter Game Name" />
+  <br />
+  <button onclick="submitRatings()">Submit</button>
+</div>
+
+<script>
+  const container = document.getElementById("rating-container");
+
+  const rowOffsets = {
+    "Gameplay": 281,
+    "Challenge": 356,
+    "Graphics": 431,
+    "Sound": 506
+  };
+
+  const ratingValues = {
+    "Gameplay": null,
+    "Challenge": null,
+    "Graphics": null,
+    "Sound": null
+  };
+
+  for (const [category, topOffset] of Object.entries(rowOffsets)) {
+    for (let i = 0; i < 5; i++) {
+      const div = document.createElement("div");
+      div.className = "click-area";
+      div.style.left = (160 + i * 83) + "px";
+      div.style.top = topOffset + "px";
+      div.dataset.offsetX = i * 83;
+      div.dataset.offsetY = topOffset;
+      div.dataset.category = category;
+      div.dataset.value = i + 1;
+      container.appendChild(div);
+
+      div.addEventListener("click", () => {
+        const selector = document.getElementById("selector_" + category);
+        selector.style.left = (160 + parseInt(div.dataset.offsetX)) + "px";
+        selector.style.top = parseInt(div.dataset.offsetY) + "px";
+        selector.style.display = "block";
+        ratingValues[category] = parseInt(div.dataset.value);
+        document.getElementById("val_" + category).innerText = div.dataset.value;
+      });
+    }
+  }
+
+  function submitRatings() {
+    const gameTitle = document.getElementById("gameTitle").value.trim() || "Untitled_Game";
+    const ratings = Object.entries(ratingValues)
+      .map(([key, val]) => `${key}: ${val !== null ? val : "-"}`)
+      .join("\n");
+    const text = `Game: ${gameTitle}\n${ratings}`;
+
+    const blob = new Blob([text], { type: "text/plain" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = gameTitle.replace(/\s+/g, "_") + "_rating.txt";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+</script>
+</body>
+</html>

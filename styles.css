@@ -117,10 +117,10 @@ table {
 /* The overlay image */
 #game-image {
   position: absolute;
-  top: 50px;    /* adjust to align with black area top */
-  left: 10px;   /* adjust to align with black area left */
-  width: 350px; /* adjust size to fit black area */
-  height: 220px;/* adjust size to fit black area */
-  object-fit: contain;
+  top: 33px;    /* adjust to align with black area top */
+  left: 35px;   /* adjust to align with black area left */
+  width: 289px; /* adjust size to fit black area */
+  height: 239px;/* adjust size to fit black area */
+  object-fit: fill;
   pointer-events: none; /* so clicks pass through */
 }

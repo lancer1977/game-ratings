@@ -33,7 +33,7 @@
     <pre id="output"></pre>
 
     <script type="module">
-        import { RAStorage, getUserProfile } from './retroachievements.js';
+        import { RAStorage, RAApi } from './retroachievements.js';
 
         document.getElementById('ra-form').addEventListener('submit', (e) => {
             e.preventDefault();
@@ -57,7 +57,7 @@
             if (username && apiKey && targetInput.value) {
                 output.textContent = "Loading...";
                 try {
-                    const data = await getUserProfile(targetInput.value);
+                    const data = await RAApi.getUserProfile(targetInput.value);
                     output.textContent = JSON.stringify(data, null, 2);
                 } catch (err) {
                     output.textContent = `Error: ${err.message}`;

@@ -9,10 +9,6 @@ table {
   border-collapse: collapse;
 }
 
-img {
-  display: block;
-}
-
 .rating-container {
   position: relative;
   width: 600px;
@@ -101,4 +97,31 @@ img {
 .user-profile h2 {
   margin: 0;
   font-size: 1.5em;
+}
+
+ 
+
+/* Make the table cell a relative container */
+#game-image-container {
+  position: relative;
+  width: 600px;  /* same as image width */
+  height: 281px; /* same as image height */
+}
+
+/* The base image */
+#GameRatingSystem_01 {
+  display: block;
+  width: 600px;
+  height: 281px;
+}
+
+/* The overlay image */
+#game-image {
+  position: absolute;
+  top: 50px;    /* adjust to align with black area top */
+  left: 10px;   /* adjust to align with black area left */
+  width: 250px; /* adjust size to fit black area */
+  height: 200px;/* adjust size to fit black area */
+  object-fit: contain;
+  pointer-events: none; /* so clicks pass through */
 }

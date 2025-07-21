@@ -19,17 +19,35 @@ export const RAStorage = {
   }
 };
 
-export async function getUserProfile(targetUsername) {
-  const { username, apiKey } = RAStorage.getCredentials();
-  if (!username || !apiKey) {
-    throw new Error("RetroAchievements credentials not found in storage.");
-  }
+export const RAApi = {
+  async getUserProfile(targetUsername) {
+    const { username, apiKey } = RAStorage.getCredentials();
+    if (!username || !apiKey) {
+      throw new Error("RetroAchievements credentials not found in storage.");
+    }
 
-  const url = `${RA_API_BASE}/API_GetUserProfile.php?z=${username}&y=${apiKey}&u=${targetUsername}`;
-  const res = await fetch(url);
-  if (!res.ok) {
-    throw new Error(`Failed to fetch profile: ${res.statusText}`);
-  }
+    const url = `${RA_API_BASE}/API_GetUserProfile.php?z=${username}&y=${apiKey}&u=${targetUsername}`;
+    const res = await fetch(url);
+    if (!res.ok) {
+      throw new Error(`Failed to fetch profile: ${res.statusText}`);
+    }
 
-  return res.json();
-}
+    return res.json();
+  },
+
+  async getRecentGame(targetUsername) {
+    const { username, apiKey } = RAStorage.getCredentials();
+    if (!username || !apiKey) {
+      throw new Error("RetroAchievements credentials not found in storage.");
+    }
+
+    const url = `${RA_API_BASE}/API_GetUserRecentlyPlayedGames.php?y=${apiKey}&u=${targetUsername}&c=1`;
+    const res = await fetch(url);
+    if (!res.ok) {
+      throw new Error(`Failed to fetch recent games: ${res.statusText}`);
+    }
+
+    const games = await res.json();
+    return Array.isArray(games) && games.length > 0 ? games[0] : null;
+  }
+};

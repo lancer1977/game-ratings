@@ -22,7 +22,11 @@
     <table id="Table_01" width="600" border="0" cellpadding="0" cellspacing="0">
       <tr>
         <td colspan="3">
-          <img id="GameRatingSystem_01" src="images/GameRatingSystem_01.png" width="600" height="281" alt="" />
+          <div id="game-image-container">
+            <img id="GameRatingSystem_01" src="images/GameRatingSystem_01.png" alt="" />
+            <img id="game-image" src="" alt="Game Image" />
+          </div>
+
         </td>
       </tr>
       <tr>
@@ -72,7 +76,7 @@
 
   <script src="script.js"></script>
   <script type="module">
-    import { RAStorage } from './retroachievements.js';
+    import { RAStorage, RAApi } from './retroachievements.js';
 
     window.addEventListener('DOMContentLoaded', () => {
       const { username, apiKey } = RAStorage.getCredentials();
@@ -82,29 +86,44 @@
         window.location.href = 'config.html';
       }
       else {
-        getUserProfile(username)
+        RAApi.getUserProfile(username)
           .then(profile => {
             console.log('User Profile:', profile);
             // You can display the profile data as needed
-            document.getElementById('user-pic').src = profile.UserPic;
+            document.getElementById('user-pic').src = "https://media.retroachievements.org" + profile.UserPic;
+
             document.getElementById('username').textContent = profile.User;
             document.getElementById('user-motto').textContent = profile.Motto || '';
             document.getElementById('rich-presence').textContent = profile.RichPresenceMsg || 'Not currently playing';
 
-            // Pre-populate game title input with RichPresence or fallback to LastGameID
-            const gameTitleInput = document.getElementById('gameTitle');
-            if (profile.RichPresenceMsg) {
-              // Try to extract title from RichPresenceMsg
-              const match = profile.RichPresenceMsg.match(/Playing ~.*~ (.+)/);
-              gameTitleInput.value = match ? match[1] : profile.RichPresenceMsg;
-            } else {
-              gameTitleInput.value = `Game ID: ${profile.LastGameID}`;
-            }
+
           })
           .catch(err => {
             console.error('Error fetching user profile:', err);
             alert('Failed to fetch user profile. Please check your credentials.');
           });
+
+        RAApi.getRecentGame(username)
+          .then(game => {
+            console.log('Game', game);
+
+            // Pre-populate game title input with RichPresence or fallback to LastGameID
+            const gameTitleInput = document.getElementById('gameTitle');
+            document.getElementById('game-image').src = "https://media.retroachievements.org" + game.ImageIcon;
+            selections["GameID"] = game.GameID;
+            selections["Game Title"] = game.Title || `Game ID: ${game.GameID}`;
+
+
+            if (game.Title) {
+              gameTitleInput.value = game.Title;
+            }
+          })
+          .catch(err => {
+            console.error('Error fetching recent game:', err);
+            alert('Failed to fetch user game. Please check your credentials.');
+          });
+
+
       }
     });
 

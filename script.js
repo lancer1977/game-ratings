@@ -6,6 +6,10 @@ const rowOffsets = {
   "Graphics": 431,
   "Sound": 506
 };
+const selections= {
+  "Game Title": "",
+  "GameID":0
+}
 
 const ratingValues = {
   "Gameplay": null,
@@ -38,9 +42,10 @@ for (const [category, topOffset] of Object.entries(rowOffsets)) {
 }
 
 function submitRatings() {
-  const gameTitle = document.getElementById("gameTitle").value.trim() || "Untitled Game";
+  const gameTitle = document.getElementById("gameTitle").value.trim() || selections["Game Title"];
   const data = {
     game: gameTitle,
+    gameID: selections["GameID"],
     ratings: { ...ratingValues }
   };
 

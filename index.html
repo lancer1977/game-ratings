@@ -15,7 +15,8 @@
     <div>
       <h2 id="username">Loading...</h2>
       <p id="user-motto"></p>
-      <p><strong>Now Playing:</strong> <span id="rich-presence">Loading...</span></p>
+      <p><strong>Now Playing:</strong><span id="current-game">Loading...</span> </p>
+      <span id="rich-presence">Loading...</span>
     </div>
   </div>
   <div class="rating-container" id="rating-container">
@@ -110,8 +111,10 @@
             // Pre-populate game title input with RichPresence or fallback to LastGameID
             const gameTitleInput = document.getElementById('gameTitle');
             document.getElementById('game-image').src = "https://media.retroachievements.org" + game.ImageIcon;
+             document.getElementById('current-game').textContent =  game.Title || 'Not currently playing';
+
             selections["GameID"] = game.GameID;
-            selections["Game Title"] = game.Title || `Game ID: ${game.GameID}`;
+            selections["Game Title"] = game.Title  ;
 
 
             if (game.Title) {

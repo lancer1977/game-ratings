@@ -90,8 +90,7 @@ table {
 .user-profile {
   display: flex;
   gap: 1rem;
-  align-items: center;
-  margin-bottom: 1rem;
+  justify-content: center;
 }
 
 .user-profile h2 {
@@ -120,8 +119,8 @@ table {
   position: absolute;
   top: 50px;    /* adjust to align with black area top */
   left: 10px;   /* adjust to align with black area left */
-  width: 250px; /* adjust size to fit black area */
-  height: 200px;/* adjust size to fit black area */
+  width: 350px; /* adjust size to fit black area */
+  height: 220px;/* adjust size to fit black area */
   object-fit: contain;
   pointer-events: none; /* so clicks pass through */
 }

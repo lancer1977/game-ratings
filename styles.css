@@ -91,3 +91,14 @@ img {
 .form-section button:hover {
   background-color: #0056b3;
 }
+.user-profile {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.user-profile h2 {
+  margin: 0;
+  font-size: 1.5em;
+}

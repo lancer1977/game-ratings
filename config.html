@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>RetroAchievements Test</title>
+</head>
+
+<body>
+    <a href="index.html">← Back to App</a>
+    <h1>RetroAchievements User Profile</h1>
+
+    <form id="ra-form">
+        <label>
+            Your Username:
+            <input type="text" id="ra-username" required>
+        </label><br>
+        <label>
+            API Key:
+            <input type="text" id="ra-apikey" required>
+        </label><br>
+        <button type="submit">Save Credentials</button>
+    </form>
+
+    <br>
+
+    <label>
+        Target Username:
+        <input type="text" id="target-username">
+    </label>
+    <button id="fetch-profile">Get Profile</button>
+
+    <pre id="output"></pre>
+
+    <script type="module">
+        import { RAStorage, getUserProfile } from './retroachievements.js';
+
+        document.getElementById('ra-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const username = document.getElementById('ra-username').value;
+            const apiKey = document.getElementById('ra-apikey').value;
+            RAStorage.setCredentials(username, apiKey);
+            alert('Credentials saved!');
+            window.location.href = "index.html";
+        });
+
+        // Prepopulate fetch on load if credentials exist
+        window.addEventListener('DOMContentLoaded', async () => {
+            const { username, apiKey } = RAStorage.getCredentials();
+            const targetInput = document.getElementById('target-username');
+            const output = document.getElementById('output');
+
+            // Optionally pre-fill the form fields
+            if (username) document.getElementById('ra-username').value = username;
+            if (apiKey) document.getElementById('ra-apikey').value = apiKey;
+
+            if (username && apiKey && targetInput.value) {
+                output.textContent = "Loading...";
+                try {
+                    const data = await getUserProfile(targetInput.value);
+                    output.textContent = JSON.stringify(data, null, 2);
+                } catch (err) {
+                    output.textContent = `Error: ${err.message}`;
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
